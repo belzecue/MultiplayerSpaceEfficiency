@@ -3,7 +3,7 @@
 
 This is a collection of techniques to improve space efficiency in multiplayer games.  Some of them are specific to sending data over the network, some are not.  Most of them build on each other and are dependent on the core strategy of representing data as integers where possible.
 
-
+I'm writing this in the context of using C# as the language and protobuf-net for protocol buffer serialization.
 
 ### 1.  Protocol Buffers
 Most people familiar with protocol buffers know that it's a very compact format.  But a lot don't really know the real secret to protocol buffers.  Which is varint encoding.  Varint encoding is an efficient scheme for representing integers using the least number of bytes possible.
