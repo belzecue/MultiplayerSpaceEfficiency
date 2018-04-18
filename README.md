@@ -56,7 +56,7 @@ Now of course you are using integers as the id's in your database right?  But yo
 
 A way to handle this is to use a temporary id pool.  You map the real id to a temporary id that is much shorter, and send that temporary id over the wire for messages in your hot path.  You need to initially send the real id and it's associated temporary id so the client can match them up.
 
-I usually code that logic using a stack, so that you hand out smaller temporary id's first.
+I usually code that logic using a stack.  Makes it easy to ensure you are handing out the smallest number available.
 
 ### 5. Delta encoding
 This technique works really well for position updates.  The basic idea is only send how much an entity has moved since the last update, versus sending the complete position.  Usually this equates to a 2 digit integer for each axis.  
