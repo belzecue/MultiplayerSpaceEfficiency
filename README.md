@@ -73,7 +73,7 @@ It's fairly common in games to favor structs for short lived objects.  But seria
 
 The other reason is that structs will at a minimum eat up 2 bytes of space.  So if you have struct fields that are often 'optional', as in you don't always use those fields, they are still taking up space on the wire and using cpu time to serialize/deserialize.
 
-You can also use buffer pooling to good effect.  This code produces no per message allocation:
+You can also use buffer pooling from System.Buffers to good effect.  This code produces no per message allocation:
 ```csharp
 var data = new MyDataClass();
 var pool = ArrayPool<byte>.Shared;
@@ -86,8 +86,10 @@ using (MemoryStream stream = new MemoryStream(buffer))
     Assert.AreEqual(0, after - before);
 }
 ```
+While that gives you a stream, sending that on the network depends on the networking library.  Generally you would read the bytes into some type of unmanaged buffer provided by the networking library.  Then write to the socket and once flushed release the buffer pool you got via Rent above.
 
-Deserialization using Merge with zero allocation
+Deserialization using Merge with zero allocation.  Likely you would get the stream using the same basic approach as above.  But this time writing into the buffer from your unmanaged network buffer before wrapping it in a stream.
+
 ```csharp
 // data = cached instance
 var before = GC.GetTotalMemory(false);
