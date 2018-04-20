@@ -65,7 +65,7 @@ Now the problem with just that part is you are likely using udp so messages can 
 
 Another not so obvious benefit of delta encoding is that the data stay's at a consistent (small) size regardless of how large the full coordinate is.  Now you will need to use zigzag encoding here, unless you want to take things to another level of complexity and have separate fields for signed and unsigned values. Which if you do that in the context of packed fields can get a little complicated.  The savings even with zigzag are substantial, IMO usually good enough.
 
-### 6. Object pooling and Class vs struct
+### 6. Object pooling and class vs struct
 
 You can avoid a lot of memory allocation by pooling instances of your message classes and reuse them.  Protobuf-net even provides a nice Merge api for deserializing into an existing instance instead of creating a new one.
 
