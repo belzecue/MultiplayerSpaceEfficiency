@@ -65,13 +65,10 @@ Now the problem with just that part is you are likely using udp so messages can 
 
 Another not so obvious benefit of delta encoding is that the data stay's at a consistent (small) size regardless of how large the full coordinate is.  Now you will need to use zigzag encoding here, unless you want to take things to another level of complexity and have separate fields for signed and unsigned values. Which if you do that in the context of packed fields can get a little complicated.  The savings even with zigzag are substantial, IMO usually good enough.
 
-### 6. Object pooling and class vs struct
+### 6. Object pooling
 
 You can avoid a lot of memory allocation by pooling instances of your message classes and reuse them.  Protobuf-net even provides a nice Merge api for deserializing into an existing instance instead of creating a new one.
 
-It's fairly common in games to favor structs for short lived objects.  But serialization is a case where you normally want to avoid using structs.  First, if you are using pooling then you aren't creating instances on a per message basis.  
-
-The other reason is that structs will at a minimum eat up 2 bytes of space.  So if you have struct fields that are often 'optional', as in you don't always use those fields, they are still taking up space on the wire and using cpu time to serialize/deserialize.
 
 You can also use buffer pooling from System.Buffers to good effect.  This code produces no per message allocation:
 ```csharp
